@@ -1,26 +1,62 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import Amplify, { Interactions } from 'aws-amplify';
+import { ChatBot, AmplifyTheme } from 'aws-amplify-react';
+import aws_exports from './aws-exports';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+Amplify.configure({
+  Auth: {
+    identityPoolId: 'us-east-1:69b93c0f-ee83-42a3-b649-673ef2df5598',
+    region: 'us-east-1'
+  },
+  Interactions: {
+    bots: {
+      "IPL": {
+        "name": "IPL",
+        "alias": "$LATEST",
+        "region": "us-east-1",
+      },
+    }
+  }
+});
+
+// Imported default theme can be customized by overloading attributes
+const myTheme = {
+  ...AmplifyTheme,
+  sectionHeader: {
+    ...AmplifyTheme.sectionHeader,
+    backgroundColor: '#ff6600'
+  }
+};
+
+class App extends Component {
+
+  handleComplete(err, confirmation) {
+    if (err) {
+      alert('Bot conversation failed')
+      return;
+    }
+
+    alert('Success: ' + JSON.stringify(confirmation, null, 2));
+    return 'Thank you! what would you like to do next?';
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <header className="App-header">
+        </header>
+        <ChatBot
+          title="IPL ChatBot"
+          theme={myTheme}
+          botName="IPL"
+          welcomeMessage="Welcome, how can I help you today?"
+          onComplete={this.handleComplete.bind(this)}
+          clearOnComplete={false}
+          conversationModeOn={true}
+        />
+      </div>
+    );
+  }
 }
 
 export default App;

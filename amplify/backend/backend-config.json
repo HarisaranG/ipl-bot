@@ -1,0 +1,22 @@
+{
+    "auth": {
+        "cognitodbf5873d": {
+            "service": "Cognito",
+            "providerPlugin": "awscloudformation"
+        }
+    },
+    "interactions": {
+        "iplbot": {
+            "service": "Lex",
+            "providerPlugin": "awscloudformation",
+            "build": true
+        }
+    },
+    "hosting": {
+        "amplifyhosting": {
+            "service": "amplifyhosting",
+            "providerPlugin": "awscloudformation",
+            "type": "manual"
+        }
+    }
+}
